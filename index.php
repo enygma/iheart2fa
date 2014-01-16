@@ -1,5 +1,10 @@
 <?php
 require_once 'vendor/autoload.php';
+require 'vendor/twilio/sdk/Services/Twilio.php';
+
+$sid = 'ACd2352b6646ce59c93500ee1b4873f800';
+$token = '8db48b2abc288a54901ba2b532cad8bc';
+$twilioClient = new Services_Twilio($sid, $token);
 
 $gauthCode = 'ZBZLWCMAKFFK66GI';
 $g = new \GAuth\Auth($gauthCode);
@@ -83,6 +88,28 @@ $app->post('/gauth/verify', function() use ($app, $g) {
 
 $app->get('/sms', function() use ($app) {
     $app->render('sms.php');
+});
+
+$app->post('/sms/send', function() use ($app, $twilioClient) {
+
+    $phone = $app->request->post('phone');
+
+    // generate the code
+    $length = 6;
+    $code = openssl_random_pseudo_bytes($length);
+    $userCode = '';
+    $i = 0;
+    while (strlen($userCode) < $length) {
+        $userCode .= hexdec(bin2hex($code{$i}));
+        $i++;
+    }
+
+    $message = $twilioClient->account->messages->sendMessage(
+        '+12145062555',
+        $phone,
+        'Your code is '.$userCode
+    );
+    $app->render('sms-sent.php', array('phone' => $phone));
 });
 
 // Execute!
