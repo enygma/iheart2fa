@@ -4,11 +4,32 @@ require_once 'vendor/autoload.php';
 $gauthCode = 'ZBZLWCMAKFFK66GI';
 $g = new \GAuth\Auth($gauthCode);
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <title>iheart2fa</title>
+        <link rel="stylesheet" href="/assets/css/bootstrap.min.css"/>
     </head>
     <body>
+        <div class="container">
+          <!-- Static navbar -->
+          <div class="navbar navbar-default" role="navigation">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="#">I &lt;heart> 2FA</a>
+            </div>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+                <li><a href="/gauth">Google Authenticator</a></li>
+                <li><a href="/sms">SMS (via Twilio)</a></li>
+              </ul>
+            </div><!--/.nav-collapse -->
+          </div>
 <?php
 
 $app = new \Slim\Slim();
@@ -19,6 +40,15 @@ $app = new \Slim\Slim();
  */
 $app->get('/', function() use ($app, $g){
     $app->render('index.php');
+});
+
+/**
+ * @route /gauth
+ * @method GET
+ */
+$app->get('/gauth', function() use ($app) {
+
+    $app->render('gauth.php');
 });
 
 /**
@@ -52,5 +82,6 @@ $app->post('/gauth/verify', function() use ($app, $g) {
 });
 $app->run();
 ?>
+        </div>
     </body>
 </html>
