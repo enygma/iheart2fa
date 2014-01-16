@@ -15,7 +15,7 @@
     <div class="form-group">
         <label for="phone">Phone Number:</label>
         <div class="col-sm-4">
-            <input type="text" name="phone" size="25" value="" class="form-control"/>
+            <input type="text" name="phone" size="25" value="" class="form-control" placeholder="Example: +12145551234"/>
         </div>
     </div>
     <div class="form-group">
