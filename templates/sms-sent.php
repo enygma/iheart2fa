@@ -1,0 +1,1 @@
+You code was sent to <?php echo $phone; ?>!
