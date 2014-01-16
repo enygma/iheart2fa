@@ -18,7 +18,7 @@
     First, we'll want to generate a QR code for you to scan and set up the application to give you
     the rotating code. Please enter your email address in the form below.
 </p>
-<form action="/gauth/generate" method="POST" role="form">
+<form action="/gauth/generate" method="POST" role="form" class="form-horizontal">
     <div class="form-group">
         <label for="email">Email Address:</label>
         <div class="col-sm-4">
@@ -37,7 +37,7 @@
 <p>
     Once you have the code scanned and the application providing a code, use this form to verify the code.
 </p>
-<form action="/gauth/verify" method="POST" role="form">
+<form action="/gauth/verify" method="POST" role="form" class="form-horizontal">
     <div class="form-group">
         <label for="code">Code:</label>
         <div class="col-sm-4">
