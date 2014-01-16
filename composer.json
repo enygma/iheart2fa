@@ -1,6 +1,7 @@
 {
     "require": {
         "slim/slim": "2.4.0",
+        "twilio/sdk": "3.12.2",
         "enygma/gauth": "dev-master"
     }
 }
