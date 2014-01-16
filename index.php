@@ -80,6 +80,12 @@ $app->post('/gauth/verify', function() use ($app, $g) {
         array('verify' => $g->validateCode($code))
     );
 });
+
+$app->get('/sms', function() use ($app) {
+    $app->render('sms.php');
+});
+
+// Execute!
 $app->run();
 ?>
         </div>
