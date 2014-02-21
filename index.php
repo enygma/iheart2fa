@@ -5,15 +5,11 @@ require_once 'vendor/autoload.php';
 require 'vendor/twilio/sdk/Services/Twilio.php';
 require_once 'Logger.php';
 
-$sid = getenv('TWILIO_SID');
-$token = getenv('TWILIO_TOKEN');
+$sid = $_SERVER['TWILIO_SID'];
+$token = $_SERVER['TWILIO_TOKEN'];
 $twilioClient = new Services_Twilio($sid, $token);
 
-$gauthCode = getenv('GAUTH_CODE');
-
-echo $token.' -> '.$sid.' -> '.$gauthCode."<br/>";
-
-
+$gauthCode = $_SERVER['GAUTH_CODE'];
 $g = new \GAuth\Auth($gauthCode);
 
 $emailLog = new Logger(__DIR__.'/_log/email.txt');
