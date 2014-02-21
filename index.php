@@ -10,6 +10,10 @@ $token = getenv('TWILIO_TOKEN');
 $twilioClient = new Services_Twilio($sid, $token);
 
 $gauthCode = getenv('GAUTH_CODE');
+
+echo $token.' -> '.$sid.' -> '.$gauthCode."<br/>";
+
+
 $g = new \GAuth\Auth($gauthCode);
 
 $emailLog = new Logger(__DIR__.'/_log/email.txt');
