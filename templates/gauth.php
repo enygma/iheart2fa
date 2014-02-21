@@ -1,10 +1,30 @@
+<script type="text/javascript">
+$(function() {
+    $('#validate-gauth').click(function(e){
+        e.preventDefault();
+        $.get('/verify-otp.php?code='+$('#gauth-code').val(),
+        function(data) {
+            if (data == 'pass') {
+                var style = 'success';
+                var message = 'Code validated!';
+            } else if (data == 'fail') {
+                var style = 'danger';
+                var message = 'Invalid code!';
+            }
+            $('#validate-output').html(
+                '<div class="alert alert-'+style+'" style="width:150px">'+message+'</div>'
+            );            
+        });
+    });
+});
+</script>
 <h2>Google Authenticator</h2>
 <p>
-    The <b>Goole Authenticator</b> two-factor system works both online and offline without the need to
+    The <b>Google Authenticator</b> two-factor system works both online and offline without the need to
     send a message or reach out to an external API to send and validate the user's code.
 </p>
 <p>
-    Google's soltuion uses a one-time password (OTP) that's a six digit numeric code that changes every so
+    Google's solution uses a one-time password (OTP) that's a six digit numeric code that changes every so
     often. By default the "stray" on validating these codes is about 2-3 minutes, but this can be
     configured during the validation process.
 </p>
@@ -20,7 +40,7 @@
 </p>
 <form action="/gauth/generate" method="POST" role="form" class="form-horizontal">
     <div class="form-group">
-        <label for="email">Email Address:</label>
+        <label for="email">Email Address:</label><br/>
         <div class="col-sm-4">
             <input type="text" name="email" size="25" value="" class="form-control"/>
         </div>
@@ -37,12 +57,13 @@
 <p>
     Once you have the code scanned and the application providing a code, use this form to verify the code.
 </p>
-<form action="/gauth/verify" method="POST" role="form" class="form-horizontal">
+<span id="validate-output"></span>
+<form role="form" class="form-horizontal">
     <div class="form-group">
-        <label for="code">Code:</label>
+        <label for="code">Code:</label><br/>
         <div class="col-sm-4">
-            <input type="text" name="code" size="15" value="" class="form-control"/>
+            <input type="text" name="code" id="gauth-code" size="15" value="" class="form-control"/>
         </div>
-        <button type="submit" name="submit" class="btn btn-primary">Validate</button>
+        <a id="validate-gauth" class="btn btn-primary">Validate</a>
     </div>
 </form>
