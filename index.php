@@ -14,6 +14,7 @@ $g = new \GAuth\Auth($gauthCode);
 
 $emailLog = new Logger(__DIR__.'/_log/email.txt');
 $phoneLog = new Logger(__DIR__.'/_log/phone.txt');
+$allPhoneLog = new Logger(__DIR__.'/_log/all-phone.txt');
 
 ?>
 <!DOCTYPE html>
@@ -99,12 +100,36 @@ $app->get('/sms', function() use ($app) {
     $app->render('sms.php');
 });
 
-$app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLog) {
+$app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLog, $allPhoneLog) {
 
-    $phone = $app->request->post('phone');
+    $phone = str_replace(
+        array('-', '.'), '',
+        $app->request->post('phone')
+    );
     $email = $app->request->post('email');
 
-    $emailLog->log($email);
+    /* Some validation! */
+
+    if (preg_match('/[\+0-9]+/', $phone) == false) {
+        return $app->render('sms-sent.php', array(
+            'phone' => '', 
+            'error' => "Invalid phone number!"
+        ));
+    }
+
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) !== $email) {
+        return $app->render('sms-sent.php', array(
+            'phone' => $phone, 
+            'error' => "Invalid email address!"
+        ));
+    }
+
+    if (in_array($phone, $allPhoneLog->get()) === true) {
+        return $app->render('sms-sent.php', array(
+            'phone' => $phone, 
+            'error' => "A code has already been sent to that number! Don't be a spammer!"
+        ));
+    }
 
     foreach ($phoneLog->get() as $line) {
         $parts = explode('|', $line);
@@ -113,11 +138,12 @@ $app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLo
                 'phone' => $phone, 
                 'error' => 'That phone number already has a pending code! Cannot resend.'
             ));
-
         }
     }
 
-    // generate the code
+    $emailLog->log($email);
+
+    // Generate the code
     $length = 6;
     $code = openssl_random_pseudo_bytes($length);
     $userCode = '';
@@ -128,8 +154,11 @@ $app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLo
     }
     $userCode = substr($userCode, 0, 6);
 
+    // Log the data
     $phoneLog->log(array($phone, $email, $userCode));
+    $allPhoneLog->log($phone);
 
+    // Send the SMS message
     $message = $twilioClient->account->messages->sendMessage(
         '+12145062555',
         $phone,
