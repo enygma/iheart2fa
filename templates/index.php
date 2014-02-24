@@ -17,4 +17,11 @@
 	different types (along with sample code) in the <a href="http://websec.io/tagged/twofactor">Two-Factor Auth</a>
 	series on <a href="http://websec.io">websec.io</a>.
 </p>
+
+<h3>Clone this Project</h3>
+<p>
+	If you'd like to poke around in the code, you can clone this project on GitHub: 
+	<a href="https://github.com/enygma/iheart2fa">https://github.com/enygma/iheart2fa</a>
+</p>
+<br/>
 <center><a href="http://websec.io"><img src="/assets/img/websecio-logo.png" border="0"/></a></center>
