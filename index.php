@@ -124,7 +124,7 @@ $app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLo
         ));
     }
 
-    if (in_array($phone, $allPhoneLog->get()) === true) {
+    if (in_array($phone, $allPhoneLog->get()) === false) {
         return $app->render('sms-sent.php', array(
             'phone' => $phone, 
             'error' => "A code has already been sent to that number! Don't be a spammer!"
