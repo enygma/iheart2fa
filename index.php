@@ -160,7 +160,7 @@ $app->post('/sms/send', function() use ($app, $twilioClient, $emailLog, $phoneLo
 
     // Send the SMS message
     $message = $twilioClient->account->messages->sendMessage(
-        '+12145062555',
+        $_SERVER['TWILIO_NUMBER'],
         $phone,
         'Your code is '.$userCode
     );
