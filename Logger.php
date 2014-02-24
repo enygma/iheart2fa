@@ -73,6 +73,7 @@ class Logger
 	 */
 	public function get()
 	{
-		return file($this->getPath());
+		$file = $this->getPath();
+		return (is_file($file)) ? file($file) : array();
 	}
 }
