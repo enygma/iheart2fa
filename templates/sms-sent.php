@@ -1,4 +1,4 @@
-<?php if ($error): ?>
+<?php if (isset($error)): ?>
 	<div class="alert alert-warning"><?php echo $error; ?></div>
 <?php else: ?>
 <h3>Your code was sent to <?php echo $phone; ?>!</h3>
